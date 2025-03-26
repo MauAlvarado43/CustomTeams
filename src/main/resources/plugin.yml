@@ -1,0 +1,66 @@
+name: Teams
+main: com.vch.teams.TeamPlugin
+version: 1.1
+api-version: 1.15
+depend: [TAB, PlaceholderAPI]
+commands:
+  team:
+    description: Team command
+    usage: /team <create|delete|join|leave|list>
+    permission: teams.use
+    aliases: [t]
+    children:
+      create:
+        description: Create a team
+        usage: /team create <name>
+        permission: teams.create
+      delete:
+        description: Delete a team
+        usage: /team delete <name>
+        permission: teams.delete
+      add:
+        description: Add a player to a team
+        usage: /team add <player>
+        permission: teams.join
+      kick:
+        description: Kick a player from a team
+        usage: /team kick <player>
+        permission: teams.kick
+      leave:
+        description: Leave a team
+        usage: /team leave
+        permission: teams.leave
+      setname:
+        description: Set the name of a team
+        usage: /team setname <name>
+        permission: teams.setname
+      info:
+        description: Get information about a team
+        usage: /team info <name>
+        permission: teams.use
+
+permissions:
+  teams.use:
+    description: Allows the player to use the /team command
+    default: true
+  teams.create:
+    description: Allows the player to create a team
+    default: true
+  teams.delete:
+    description: Allows the player to delete a team
+    default: true
+  teams.join:
+    description: Allows the player to add a player to a team
+    default: true
+  teams.kick:
+    description: Allows the player to kick a player from a team
+    default: true
+  teams.leave:
+    description: Allows the player to leave a team
+    default: true
+  teams.setname:
+    description: Allows the player to set the name of a team
+    default: true
+  teams.info:
+    description: Allows the player to get information about a team
+    default: true
