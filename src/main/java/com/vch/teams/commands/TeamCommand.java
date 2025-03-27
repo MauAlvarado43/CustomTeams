@@ -24,20 +24,21 @@ public class TeamCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if(!(sender instanceof Player)) {
-            if(sender != null)
+        if (!(sender instanceof Player)) {
+            if (sender != null) {
                 sender.sendMessage(ChatColor.BLUE + "[Teams] " + ChatColor.RED + "Este comando solo puede ser usado por jugadores.");
+            }
             return true;
         }
 
         Player player = (Player) sender;
 
-        if(args.length < 1) {
+        if (args.length < 1) {
             player.sendMessage(ChatColor.BLUE + "[Teams] " + ChatColor.YELLOW + "Uso: /team <create|delete|add|kick|leave|setname|info> [args]");
             return true;
         }
 
-        switch(args[0].toLowerCase()) {
+        switch (args[0].toLowerCase()) {
             case "create":
                 createCommand(player, args);
                 break;
@@ -73,15 +74,15 @@ public class TeamCommand implements CommandExecutor {
 
     public void createCommand(Player player, String[] args) {
 
-      TeamManager teamManager = plugin.getTeamManager();
+        TeamManager teamManager = plugin.getTeamManager();
 
-      if(args.length < 2) {
+        if (args.length < 2) {
             player.sendMessage(ChatColor.BLUE + "[Teams] " + ChatColor.RED + "Uso: /team create <nombre>");
             return;
-      }
+        }
 
-      String teamName = args[1];
-      String status = teamManager.createTeam(player, teamName);
+        String teamName = String.join(" ", args).substring(7);
+        String status = teamManager.createTeam(player, teamName);
 
         switch (status) {
             case TeamCommandStatus.TEAM_CREATED:
@@ -100,7 +101,7 @@ public class TeamCommand implements CommandExecutor {
                 player.sendMessage(ChatColor.BLUE + "[Teams] " + ChatColor.RED + "No se pudo crear el equipo.");
                 break;
         }
-        
+
     }
 
     public void deleteCommand(Player player) {
@@ -128,15 +129,15 @@ public class TeamCommand implements CommandExecutor {
 
         TeamManager teamManager = plugin.getTeamManager();
 
-        if(args.length < 2) {
+        if (args.length < 2) {
             player.sendMessage(ChatColor.BLUE + "[Teams] " + ChatColor.RED + "Uso: /team add <jugador>");
             return;
         }
 
         Player target = Bukkit.getPlayer(args[1]);
-        if(target == null) {
-          player.sendMessage(ChatColor.BLUE + "[Teams] " + ChatColor.RED + "Jugador no encontrado.");
-          return;
+        if (target == null) {
+            player.sendMessage(ChatColor.BLUE + "[Teams] " + ChatColor.RED + "Jugador no encontrado.");
+            return;
         }
 
         String status = teamManager.addPlayer(player, target);
@@ -171,15 +172,15 @@ public class TeamCommand implements CommandExecutor {
 
         TeamManager teamManager = plugin.getTeamManager();
 
-        if(args.length < 2) {
+        if (args.length < 2) {
             player.sendMessage(ChatColor.BLUE + "[Teams] " + ChatColor.RED + "Uso: /team kick <jugador>");
             return;
         }
 
         Player target = Bukkit.getPlayer(args[1]);
-        if(target == null) {
-          player.sendMessage(ChatColor.BLUE + "[Teams] " + ChatColor.RED + "Jugador no encontrado.");
-          return;
+        if (target == null) {
+            player.sendMessage(ChatColor.BLUE + "[Teams] " + ChatColor.RED + "Jugador no encontrado.");
+            return;
         }
 
         String status = teamManager.removePlayer(player, target);
@@ -229,12 +230,12 @@ public class TeamCommand implements CommandExecutor {
 
         TeamManager teamManager = plugin.getTeamManager();
 
-        if(args.length < 2) {
+        if (args.length < 2) {
             player.sendMessage(ChatColor.BLUE + "[Teams] " + ChatColor.RED + "Uso: /team setname <nuevo_nombre>");
             return;
         }
 
-        String newName = args[1];
+        String newName = String.join(" ", args).substring(9);
         String status = teamManager.renameTeam(player, newName);
         switch (status) {
             case TeamCommandStatus.TEAM_RENAMED:
@@ -261,17 +262,16 @@ public class TeamCommand implements CommandExecutor {
         TeamManager teamManager = plugin.getTeamManager();
         Team team = teamManager.getTeam(player);
 
-        if(team == null) {
+        if (team == null) {
             player.sendMessage(ChatColor.BLUE + "[Teams] " + ChatColor.RED + "No tienes un equipo.");
-        }
-        else {
+        } else {
 
             player.sendMessage(ChatColor.BLUE + "[Teams] " + ChatColor.GREEN + "Equipo: " + team.getName());
             player.sendMessage(ChatColor.BLUE + "[Teams] " + ChatColor.GREEN + "Dueño: " + team.getLeader().getName());
 
-            if(!team.getMembers().isEmpty()) {
+            if (!team.getMembers().isEmpty()) {
                 player.sendMessage(ChatColor.BLUE + "[Teams] " + ChatColor.GREEN + "Miembros:");
-                for(TeamMember member : team.getMembers()) {
+                for (TeamMember member : team.getMembers()) {
                     player.sendMessage(ChatColor.BLUE + "[Teams] " + ChatColor.GREEN + "- " + member.getName());
                 }
             }
